@@ -153,4 +153,28 @@ export class AdminController {
       blockEmailDto.reason,
     );
   }
+
+  @Version('1')
+  @Get('dashboard/metrics')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get dashboard metrics' })
+  @ApiResponse({
+    status: 200,
+    description: 'Dashboard metrics',
+    schema: {
+      type: 'object',
+      properties: {
+        totalUsers: { type: 'number' },
+        activeUsers: { type: 'number' },
+        pendingKyc: { type: 'number' },
+        serviceProviders: { type: 'number' },
+        bookings: { type: 'number' },
+        tenants: { type: 'number' },
+      },
+    },
+  })
+  @Permissions(Permission.USER_READ)
+  async getMetricsHandler() {
+    return this.adminService.getDashboardMetrics();
+  }
 }

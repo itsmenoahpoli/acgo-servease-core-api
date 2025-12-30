@@ -114,7 +114,7 @@ export class AuthService {
     }
 
     const otp = await this.generateOTP(user.id, 'signin');
-    const userName = this.extractNameFromEmail(email);
+    const userName = user.name || this.extractNameFromEmail(email);
     await this.notificationsService.sendOTP(email, otp.code, 'signin', userName);
 
     return { message: 'OTP sent to your email' };

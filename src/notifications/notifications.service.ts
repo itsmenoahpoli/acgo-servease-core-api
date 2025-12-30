@@ -27,6 +27,10 @@ export class NotificationsService {
     return `${appUrl}/public/brand-logo.jpeg`;
   }
 
+  private getFromAddress(): string {
+    return 'Servease <no-reply.system@servease.com>';
+  }
+
   async sendOTP(email: string, otp: string, type: 'signup' | 'signin', userName?: string) {
     const subject =
       type === 'signup'
@@ -37,7 +41,7 @@ export class NotificationsService {
     const html = generateOTPEmail(otp, type, expiryMinutes, userName, this.getLogoUrl());
 
     return this.transporter.sendMail({
-      from: this.configService.get<string>('SMTP_USER'),
+      from: this.getFromAddress(),
       to: email,
       subject,
       html,
@@ -57,7 +61,7 @@ export class NotificationsService {
     const html = generateKYCNotificationEmail(status, notes, this.getLogoUrl());
 
     return this.transporter.sendMail({
-      from: this.configService.get<string>('SMTP_USER'),
+      from: this.getFromAddress(),
       to: email,
       subject,
       html,

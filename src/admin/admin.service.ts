@@ -7,7 +7,10 @@ import { Permission } from '@/entities/permission.entity';
 import { Kyc } from '@/entities/kyc.entity';
 import { BlacklistedIP } from '@/entities/blacklisted-ip.entity';
 import { BlockedEmail } from '@/entities/blocked-email.entity';
+import { Booking } from '@/entities/booking.entity';
+import { Tenant } from '@/entities/tenant.entity';
 import { AccountStatus } from '@/common/enums/account-status.enum';
+import { AccountType } from '@/common/enums/account-type.enum';
 import { KycStatus } from '@/common/enums/kyc-status.enum';
 import { Permission as PermissionEnum } from '@/common/enums/permission.enum';
 import { NotificationsService } from '@/notifications/notifications.service';
@@ -27,6 +30,10 @@ export class AdminService {
     private blacklistedIPRepository: Repository<BlacklistedIP>,
     @InjectRepository(BlockedEmail)
     private blockedEmailRepository: Repository<BlockedEmail>,
+    @InjectRepository(Booking)
+    private bookingRepository: Repository<Booking>,
+    @InjectRepository(Tenant)
+    private tenantRepository: Repository<Tenant>,
     private notificationsService: NotificationsService,
   ) {}
 
@@ -181,5 +188,41 @@ export class AdminService {
       relations: ['user'],
       order: { createdAt: 'DESC' },
     });
+  }
+
+  async getDashboardMetrics() {
+    const [
+      totalUsers,
+      activeUsers,
+      pendingKyc,
+      serviceProviders,
+      bookings,
+      tenants,
+    ] = await Promise.all([
+      this.userRepository.count(),
+      this.userRepository.count({
+        where: { accountStatus: AccountStatus.ACTIVE },
+      }),
+      this.kycRepository.count({
+        where: { status: KycStatus.PENDING },
+      }),
+      this.userRepository.count({
+        where: [
+          { accountType: AccountType.SERVICE_PROVIDER_INDEPENDENT },
+          { accountType: AccountType.SERVICE_PROVIDER_BUSINESS },
+        ],
+      }),
+      this.bookingRepository.count(),
+      this.tenantRepository.count(),
+    ]);
+
+    return {
+      totalUsers,
+      activeUsers,
+      pendingKyc,
+      serviceProviders,
+      bookings,
+      tenants,
+    };
   }
 }

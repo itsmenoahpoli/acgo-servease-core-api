@@ -67,6 +67,7 @@ async function seed() {
     const testUsers = [
       {
         email: 'admin@servease.com',
+        name: 'Admin User',
         password: hashedPassword,
         accountType: AccountType.ADMIN,
         accountStatus: AccountStatus.ACTIVE,
@@ -74,18 +75,21 @@ async function seed() {
       },
       {
         email: 'customer@servease.com',
+        name: 'John Customer',
         password: hashedPassword,
         accountType: AccountType.CUSTOMER,
         accountStatus: AccountStatus.ACTIVE,
       },
       {
         email: 'provider.independent@servease.com',
+        name: 'Jane Provider',
         password: hashedPassword,
         accountType: AccountType.SERVICE_PROVIDER_INDEPENDENT,
         accountStatus: AccountStatus.ACTIVE,
       },
       {
         email: 'provider.business@servease.com',
+        name: 'Business Corp',
         password: hashedPassword,
         accountType: AccountType.SERVICE_PROVIDER_BUSINESS,
         accountStatus: AccountStatus.ACTIVE,
@@ -102,7 +106,9 @@ async function seed() {
         await userRepository.save(userData);
         console.log(`✅ Created user: ${userData.email}`);
       } else {
-        console.log(`⏭️  User already exists: ${userData.email}`);
+        existingUser.name = userData.name;
+        await userRepository.save(existingUser);
+        console.log(`✅ Updated user: ${userData.email}`);
       }
     }
 

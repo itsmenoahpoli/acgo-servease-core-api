@@ -8,6 +8,8 @@ import { Permission } from '@/entities/permission.entity';
 import { Kyc } from '@/entities/kyc.entity';
 import { BlacklistedIP } from '@/entities/blacklisted-ip.entity';
 import { BlockedEmail } from '@/entities/blocked-email.entity';
+import { Booking } from '@/entities/booking.entity';
+import { Tenant } from '@/entities/tenant.entity';
 import { NotificationsModule } from '@/notifications/notifications.module';
 
 @Module({
@@ -19,6 +21,8 @@ import { NotificationsModule } from '@/notifications/notifications.module';
       Kyc,
       BlacklistedIP,
       BlockedEmail,
+      Booking,
+      Tenant,
     ]),
     NotificationsModule,
   ],
