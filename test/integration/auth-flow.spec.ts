@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../../src/app.module';
 import { TestUtils } from '../test-utils';
-import { AccountType } from '../../src/common/enums/account-type.enum';
+import { AccountType } from '../../src/app/common/enums/account-type.enum';
 
 describe('Auth Flow Integration', () => {
   let app: INestApplication;

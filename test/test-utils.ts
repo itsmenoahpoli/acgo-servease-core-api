@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AccountType } from '../src/common/enums/account-type.enum';
+import { AccountType } from '../src/app/common/enums/account-type.enum';
 
 export class TestUtils {
   static async createUser(

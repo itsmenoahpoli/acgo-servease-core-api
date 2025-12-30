@@ -16,12 +16,13 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
-      "@/common/*": ["src/common/*"],
-      "@/entities/*": ["src/entities/*"],
+      "@/common/*": ["src/app/common/*"],
+      "@/entities": ["src/app/entities"],
+      "@/entities/*": ["src/app/entities/*"],
       "@/auth/*": ["src/auth/*"],
       "@/admin/*": ["src/admin/*"],
       "@/kyc/*": ["src/kyc/*"],
-      "@/services/*": ["src/services/*"],
+      "@/services/*": ["src/app/services/*"],
       "@/bookings/*": ["src/bookings/*"],
       "@/payments/*": ["src/payments/*"],
       "@/notifications/*": ["src/notifications/*"],
@@ -38,5 +39,12 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test",
+    "**/*.spec.ts",
+    "**/*.e2e-spec.ts"
+  ]
 }

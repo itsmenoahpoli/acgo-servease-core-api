@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { AccountStatus } from '../src/common/enums/account-status.enum';
+import { AccountStatus } from '../src/app/common/enums/account-status.enum';
 
 describe('Admin (e2e)', () => {
   let app: INestApplication;

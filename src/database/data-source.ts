@@ -11,7 +11,11 @@ export default new DataSource({
   type: 'postgres',
   url: configService.get<string>('DATABASE_URL'),
   entities: Object.values(entities),
-  migrations: ['src/database/migrations/*.ts'],
+  migrations: [
+    process.env.NODE_ENV === 'production'
+      ? 'dist/database/migrations/*.js'
+      : 'src/database/migrations/*.ts',
+  ],
   synchronize: false,
 });
 

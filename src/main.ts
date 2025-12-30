@@ -10,7 +10,14 @@ async function bootstrap() {
 
   app.use(helmet());
 
-  app.enableCors();
+  const allowedOrigins = process.env.CORS_ORIGINS
+    ? process.env.CORS_ORIGINS.split(',')
+    : ['*'];
+
+  app.enableCors({
+    origin: allowedOrigins.includes('*') ? true : allowedOrigins,
+    credentials: true,
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({

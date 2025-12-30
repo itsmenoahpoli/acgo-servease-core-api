@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { AccountType } from '../src/common/enums/account-type.enum';
+import { AccountType } from '../src/app/common/enums/account-type.enum';
 
 describe('Auth (e2e)', () => {
   let app: INestApplication;
