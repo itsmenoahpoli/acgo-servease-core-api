@@ -5,6 +5,7 @@ import {
   Get,
   UseGuards,
   Request,
+  Version,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -27,6 +28,7 @@ import { AccountTypes } from '@/common/decorators/account-type.decorator';
 export class KycController {
   constructor(private kycService: KycService) {}
 
+  @Version('1')
   @Post('submit')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Submit KYC (Service Providers Only)' })
@@ -46,6 +48,7 @@ export class KycController {
     );
   }
 
+  @Version('1')
   @Get('status')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get KYC Status' })

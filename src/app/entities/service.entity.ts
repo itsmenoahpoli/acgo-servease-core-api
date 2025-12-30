@@ -41,6 +41,14 @@ export class Service {
   @Column('text', { nullable: true })
   description: string;
 
+  @Column('jsonb', { nullable: true })
+  images: Array<{
+    url: string;
+    alt?: string;
+    order?: number;
+    caption?: string;
+  }>;
+
   @Column({ nullable: true })
   cityId: string;
 

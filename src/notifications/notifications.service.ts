@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
+import {
+  generateOTPEmail,
+  generateKYCNotificationEmail,
+} from './email-templates';
 
 @Injectable()
 export class NotificationsService {
@@ -18,18 +22,19 @@ export class NotificationsService {
     });
   }
 
-  async sendOTP(email: string, otp: string, type: 'signup' | 'signin') {
+  private getLogoUrl(): string {
+    const appUrl = this.configService.get<string>('APP_URL', 'http://localhost:3000');
+    return `${appUrl}/public/brand-logo.jpeg`;
+  }
+
+  async sendOTP(email: string, otp: string, type: 'signup' | 'signin', userName?: string) {
     const subject =
       type === 'signup'
         ? 'Verify your account - OTP Code'
         : 'Sign in to your account - OTP Code';
 
-    const html = `
-      <h2>${subject}</h2>
-      <p>Your OTP code is: <strong>${otp}</strong></p>
-      <p>This code will expire in ${this.configService.get<number>('OTP_EXPIRY_MINUTES', 5)} minutes.</p>
-      <p>If you didn't request this code, please ignore this email.</p>
-    `;
+    const expiryMinutes = this.configService.get<number>('OTP_EXPIRY_MINUTES', 5);
+    const html = generateOTPEmail(otp, type, expiryMinutes, userName, this.getLogoUrl());
 
     return this.transporter.sendMail({
       from: this.configService.get<string>('SMTP_USER'),
@@ -49,12 +54,7 @@ export class NotificationsService {
         ? 'KYC Verification Approved'
         : 'KYC Verification Rejected';
 
-    const html = `
-      <h2>${subject}</h2>
-      <p>Your KYC verification has been ${status}.</p>
-      ${notes ? `<p>Notes: ${notes}</p>` : ''}
-      ${status === 'rejected' ? '<p>Please submit a new KYC application.</p>' : ''}
-    `;
+    const html = generateKYCNotificationEmail(status, notes, this.getLogoUrl());
 
     return this.transporter.sendMail({
       from: this.configService.get<string>('SMTP_USER'),

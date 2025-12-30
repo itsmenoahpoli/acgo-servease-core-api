@@ -30,6 +30,14 @@ export class AuthService {
     private notificationsService: NotificationsService,
   ) {}
 
+  private extractNameFromEmail(email: string): string {
+    const emailPart = email.split('@')[0];
+    return emailPart
+      .split(/[._-]/)
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+      .join(' ');
+  }
+
   async signup(email: string, password: string, accountType: AccountType) {
     const existingUser = await this.userRepository.findOne({
       where: { email },
@@ -56,7 +64,8 @@ export class AuthService {
     await this.userRepository.save(user);
 
     const otp = await this.generateOTP(user.id, 'signup');
-    await this.notificationsService.sendOTP(email, otp.code, 'signup');
+    const userName = this.extractNameFromEmail(email);
+    await this.notificationsService.sendOTP(email, otp.code, 'signup', userName);
 
     return { message: 'OTP sent to your email' };
   }
@@ -105,7 +114,8 @@ export class AuthService {
     }
 
     const otp = await this.generateOTP(user.id, 'signin');
-    await this.notificationsService.sendOTP(email, otp.code, 'signin');
+    const userName = this.extractNameFromEmail(email);
+    await this.notificationsService.sendOTP(email, otp.code, 'signin', userName);
 
     return { message: 'OTP sent to your email' };
   }

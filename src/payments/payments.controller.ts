@@ -7,6 +7,7 @@ import {
   Body,
   UseGuards,
   Request,
+  Version,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -26,6 +27,7 @@ import { AccountStatusGuard } from '@/common/guards/account-status.guard';
 export class PaymentsController {
   constructor(private paymentsService: PaymentsService) {}
 
+  @Version('1')
   @Get('booking/:bookingId')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get payment by booking ID' })
@@ -33,6 +35,7 @@ export class PaymentsController {
     return this.paymentsService.getPaymentByBookingId(bookingId);
   }
 
+  @Version('1')
   @Post('booking/:bookingId/intent')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create payment intent (Payment gateway ready)' })
@@ -40,6 +43,7 @@ export class PaymentsController {
     return this.paymentsService.createPaymentIntent(bookingId);
   }
 
+  @Version('1')
   @Patch(':id/status')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update payment status' })

@@ -8,6 +8,7 @@ import {
   Query,
   UseGuards,
   Request,
+  Version,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -30,6 +31,7 @@ import { BookingStatus } from '@/common/enums/booking-status.enum';
 export class BookingsController {
   constructor(private bookingsService: BookingsService) {}
 
+  @Version('1')
   @Post()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create booking' })
@@ -44,6 +46,7 @@ export class BookingsController {
     );
   }
 
+  @Version('1')
   @Get()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user bookings' })
@@ -55,6 +58,7 @@ export class BookingsController {
     return this.bookingsService.getBookings(req.user.id, type);
   }
 
+  @Version('1')
   @Get(':id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get booking by ID' })
@@ -62,6 +66,7 @@ export class BookingsController {
     return this.bookingsService.getBookingById(id, req.user.id);
   }
 
+  @Version('1')
   @Patch(':id/status')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update booking status' })

@@ -7,6 +7,7 @@ import {
   Param,
   UseGuards,
   Request,
+  Version,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -34,6 +35,7 @@ import { Public } from '@/common/decorators/public.decorator';
 export class ServicesController {
   constructor(private servicesService: ServicesService) {}
 
+  @Version('1')
   @Post('admin/service-categories')
   @UseGuards(JwtAuthGuard, AccountStatusGuard, RolesGuard)
   @ApiBearerAuth()
@@ -47,6 +49,7 @@ export class ServicesController {
     );
   }
 
+  @Version('1')
   @Get('categories')
   @Public()
   @ApiOperation({ summary: 'Get all service categories' })
@@ -54,6 +57,7 @@ export class ServicesController {
     return this.servicesService.getCategories();
   }
 
+  @Version('1')
   @Post()
   @UseGuards(JwtAuthGuard, AccountStatusGuard, AccountTypeGuard)
   @ApiBearerAuth()
@@ -70,9 +74,11 @@ export class ServicesController {
       createServiceDto.categoryId,
       createServiceDto.price,
       createServiceDto.description,
+      createServiceDto.images,
     );
   }
 
+  @Version('1')
   @Get()
   @Public()
   @ApiOperation({ summary: 'Browse services (Public)' })
@@ -89,6 +95,7 @@ export class ServicesController {
     return this.servicesService.browseServices(category, minPrice, maxPrice, cityId);
   }
 
+  @Version('1')
   @Get(':id')
   @Public()
   @ApiOperation({ summary: 'Get service by ID' })

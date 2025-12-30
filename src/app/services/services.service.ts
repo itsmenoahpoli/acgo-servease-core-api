@@ -32,6 +32,12 @@ export class ServicesService {
     categoryId: string,
     price: number,
     description?: string,
+    images?: Array<{
+      url: string;
+      alt?: string;
+      order?: number;
+      caption?: string;
+    }>,
   ) {
     const provider = await this.userRepository.findOne({
       where: { id: providerId },
@@ -62,6 +68,7 @@ export class ServicesService {
       providerId,
       price,
       description,
+      images,
       cityId: provider.cityId,
       isActive: true,
     });

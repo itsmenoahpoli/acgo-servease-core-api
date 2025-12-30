@@ -7,6 +7,7 @@ import {
   Param,
   UseGuards,
   Request,
+  Version,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -34,6 +35,7 @@ import { BlockEmailDto } from './dto/block-email.dto';
 export class AdminController {
   constructor(private adminService: AdminService) {}
 
+  @Version('1')
   @Get('users')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all users' })
@@ -42,6 +44,7 @@ export class AdminController {
     return this.adminService.getUsers();
   }
 
+  @Version('1')
   @Patch('users/:id/status')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update user status' })
@@ -57,6 +60,7 @@ export class AdminController {
     );
   }
 
+  @Version('1')
   @Post('roles')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create role' })
@@ -70,6 +74,7 @@ export class AdminController {
     );
   }
 
+  @Version('1')
   @Patch('roles/:id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update role' })
@@ -86,6 +91,7 @@ export class AdminController {
     );
   }
 
+  @Version('1')
   @Patch('kyc/:id/approve')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Approve KYC' })
@@ -99,6 +105,7 @@ export class AdminController {
     return this.adminService.approveKYC(kycId, req.user.id, body.notes);
   }
 
+  @Version('1')
   @Patch('kyc/:id/reject')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Reject KYC' })
@@ -112,6 +119,7 @@ export class AdminController {
     return this.adminService.rejectKYC(kycId, req.user.id, body.notes);
   }
 
+  @Version('1')
   @Get('kyc')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all KYC submissions' })
@@ -120,6 +128,7 @@ export class AdminController {
     return this.adminService.getKYCList();
   }
 
+  @Version('1')
   @Post('blacklist/ip')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Blacklist IP address' })
@@ -132,6 +141,7 @@ export class AdminController {
     );
   }
 
+  @Version('1')
   @Post('block-email')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Block email address' })

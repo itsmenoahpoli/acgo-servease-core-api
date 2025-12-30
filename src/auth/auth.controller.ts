@@ -5,6 +5,7 @@ import {
   UseGuards,
   Get,
   Request,
+  Version,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -28,6 +29,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Public()
+  @Version('1')
   @Post('signup')
   @ApiOperation({ summary: 'User Signup' })
   @ApiResponse({ status: 201, description: 'OTP sent to email' })
@@ -42,6 +44,7 @@ export class AuthController {
   }
 
   @Public()
+  @Version('1')
   @Post('signup/verify-otp')
   @ApiOperation({ summary: 'Verify Signup OTP' })
   @ApiResponse({ status: 200, description: 'Account verified' })
@@ -55,6 +58,7 @@ export class AuthController {
   }
 
   @Public()
+  @Version('1')
   @Post('signin')
   @ApiOperation({ summary: 'User Signin' })
   @ApiResponse({ status: 200, description: 'OTP sent to email' })
@@ -65,6 +69,7 @@ export class AuthController {
   }
 
   @Public()
+  @Version('1')
   @Post('signin/verify-otp')
   @ApiOperation({ summary: 'Verify Signin OTP' })
   @ApiResponse({
@@ -87,6 +92,7 @@ export class AuthController {
   }
 
   @Public()
+  @Version('1')
   @Post('refresh')
   @ApiOperation({ summary: 'Refresh access token' })
   @ApiResponse({
@@ -99,6 +105,7 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Version('1')
   @Post('logout')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Logout user' })
@@ -112,6 +119,7 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Version('1')
   @Get('profile')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get current user profile' })

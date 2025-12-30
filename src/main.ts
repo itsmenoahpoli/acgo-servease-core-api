@@ -1,13 +1,19 @@
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 import basicAuth from 'express-basic-auth';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from '@/app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.useStaticAssets(join(process.cwd(), 'public'), {
+    prefix: '/public/',
+  });
 
   app.use(helmet());
 
@@ -18,6 +24,11 @@ async function bootstrap() {
   app.enableCors({
     origin: allowedOrigins.includes('*') ? true : allowedOrigins,
     credentials: true,
+  });
+
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1',
   });
 
   app.useGlobalPipes(
@@ -32,7 +43,7 @@ async function bootstrap() {
   const swaggerPassword = process.env.SWAGGER_PASSWORD || 'admin';
 
   app.use(
-    ['/api', '/api-json', '/api-yaml'],
+    ['/api-docs', '/api-json', '/api-yaml'],
     basicAuth({
       challenge: true,
       users: {
@@ -49,7 +60,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
 }
