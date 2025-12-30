@@ -1,0 +1,6 @@
+export enum Permission {
+  USER_READ = 'USER_READ',
+  USER_WRITE = 'USER_WRITE',
+  KYC_APPROVE = 'KYC_APPROVE',
+  SYSTEM_SECURITY = 'SYSTEM_SECURITY',
+}

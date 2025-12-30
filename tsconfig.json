@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolvePackageJsonExports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/common/*": ["src/common/*"],
+      "@/entities/*": ["src/entities/*"],
+      "@/auth/*": ["src/auth/*"],
+      "@/admin/*": ["src/admin/*"],
+      "@/kyc/*": ["src/kyc/*"],
+      "@/services/*": ["src/services/*"],
+      "@/bookings/*": ["src/bookings/*"],
+      "@/payments/*": ["src/payments/*"],
+      "@/notifications/*": ["src/notifications/*"],
+      "@/tenants/*": ["src/tenants/*"],
+      "@/cities/*": ["src/cities/*"],
+      "@/users/*": ["src/users/*"],
+      "@/roles/*": ["src/roles/*"],
+      "@/permissions/*": ["src/permissions/*"]
+    },
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false
+  }
+}
