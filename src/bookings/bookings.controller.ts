@@ -35,7 +35,7 @@ export class BookingsController {
   @ApiOperation({ summary: 'Create booking' })
   @ApiResponse({ status: 201, description: 'Booking created' })
   @ApiBody({ type: CreateBookingDto })
-  async createBooking(@Request() req, @Body() createBookingDto: CreateBookingDto) {
+  async createBookingHandler(@Request() req, @Body() createBookingDto: CreateBookingDto) {
     return this.bookingsService.createBooking(
       req.user.id,
       createBookingDto.serviceId,
@@ -48,7 +48,7 @@ export class BookingsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user bookings' })
   @ApiQuery({ name: 'type', enum: ['customer', 'provider'], required: false })
-  async getBookings(
+  async getBookingsHandler(
     @Request() req,
     @Query('type') type: 'customer' | 'provider' = 'customer',
   ) {
@@ -58,7 +58,7 @@ export class BookingsController {
   @Get(':id')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get booking by ID' })
-  async getBookingById(@Request() req, @Param('id') id: string) {
+  async getBookingByIdHandler(@Request() req, @Param('id') id: string) {
     return this.bookingsService.getBookingById(id, req.user.id);
   }
 
@@ -66,7 +66,7 @@ export class BookingsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update booking status' })
   @ApiBody({ type: UpdateBookingStatusDto })
-  async updateBookingStatus(
+  async updateBookingStatusHandler(
     @Param('id') id: string,
     @Body() updateBookingStatusDto: UpdateBookingStatusDto,
   ) {

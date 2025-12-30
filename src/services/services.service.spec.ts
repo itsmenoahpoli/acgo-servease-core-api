@@ -153,6 +153,7 @@ describe('ServicesService', () => {
     it('should return filtered services', async () => {
       const mockQueryBuilder = {
         leftJoinAndSelect: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
         andWhere: jest.fn().mockReturnThis(),
         getMany: jest.fn().mockResolvedValue([]),
       };
@@ -162,6 +163,7 @@ describe('ServicesService', () => {
       await service.browseServices('plumbing', 100, 1000);
 
       expect(mockServiceRepository.createQueryBuilder).toHaveBeenCalled();
+      expect(mockQueryBuilder.where).toHaveBeenCalled();
       expect(mockQueryBuilder.andWhere).toHaveBeenCalled();
     });
   });

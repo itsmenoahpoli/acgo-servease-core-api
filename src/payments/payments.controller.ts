@@ -29,14 +29,14 @@ export class PaymentsController {
   @Get('booking/:bookingId')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get payment by booking ID' })
-  async getPaymentByBookingId(@Param('bookingId') bookingId: string) {
+  async getPaymentByBookingIdHandler(@Param('bookingId') bookingId: string) {
     return this.paymentsService.getPaymentByBookingId(bookingId);
   }
 
   @Post('booking/:bookingId/intent')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create payment intent (Payment gateway ready)' })
-  async createPaymentIntent(@Param('bookingId') bookingId: string) {
+  async createPaymentIntentHandler(@Param('bookingId') bookingId: string) {
     return this.paymentsService.createPaymentIntent(bookingId);
   }
 
@@ -44,7 +44,7 @@ export class PaymentsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update payment status' })
   @ApiBody({ type: UpdatePaymentStatusDto })
-  async updatePaymentStatus(
+  async updatePaymentStatusHandler(
     @Param('id') paymentId: string,
     @Body() updatePaymentStatusDto: UpdatePaymentStatusDto,
   ) {

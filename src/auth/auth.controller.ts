@@ -33,7 +33,7 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'OTP sent to email' })
   @ApiResponse({ status: 409, description: 'User already exists' })
   @ApiBody({ type: SignupDto })
-  async signup(@Body() signupDto: SignupDto) {
+  async signupHandler(@Body() signupDto: SignupDto) {
     return this.authService.signup(
       signupDto.email,
       signupDto.password,
@@ -47,7 +47,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Account verified' })
   @ApiResponse({ status: 401, description: 'Invalid or expired OTP' })
   @ApiBody({ type: VerifyOtpDto })
-  async verifySignupOTP(@Body() verifyOtpDto: VerifyOtpDto) {
+  async verifySignupOTPHandler(@Body() verifyOtpDto: VerifyOtpDto) {
     return this.authService.verifySignupOTP(
       verifyOtpDto.email,
       verifyOtpDto.otp,
@@ -60,7 +60,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'OTP sent to email' })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   @ApiBody({ type: SigninDto })
-  async signin(@Body() signinDto: SigninDto) {
+  async signinHandler(@Body() signinDto: SigninDto) {
     return this.authService.signin(signinDto.email, signinDto.password);
   }
 
@@ -79,7 +79,7 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: 'Invalid or expired OTP' })
   @ApiBody({ type: VerifyOtpDto })
-  async verifySigninOTP(@Body() verifyOtpDto: VerifyOtpDto) {
+  async verifySigninOTPHandler(@Body() verifyOtpDto: VerifyOtpDto) {
     return this.authService.verifySigninOTP(
       verifyOtpDto.email,
       verifyOtpDto.otp,
@@ -94,7 +94,7 @@ export class AuthController {
     description: 'Returns new access and refresh tokens',
   })
   @ApiBody({ type: RefreshTokenDto })
-  async refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
+  async refreshTokenHandler(@Body() refreshTokenDto: RefreshTokenDto) {
     return this.authService.refreshToken(refreshTokenDto.refreshToken);
   }
 
@@ -104,7 +104,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Logout user' })
   @ApiResponse({ status: 200, description: 'Logged out successfully' })
   @ApiBody({ schema: { type: 'object', properties: { refreshToken: { type: 'string' } } } })
-  async logout(
+  async logoutHandler(
     @CurrentUser() user: any,
     @Body() body: { refreshToken?: string },
   ) {
@@ -116,7 +116,7 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get current user profile' })
   @ApiResponse({ status: 200, description: 'User profile' })
-  async getProfile(@Request() req) {
+  async getProfileHandler(@Request() req) {
     return req.user;
   }
 }

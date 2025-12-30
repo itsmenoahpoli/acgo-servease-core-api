@@ -6,6 +6,7 @@ import { BookingsService } from './bookings.service';
 import { Booking } from '@/entities/booking.entity';
 import { Service } from '@/entities/service.entity';
 import { Payment } from '@/entities/payment.entity';
+import { User } from '@/entities/user.entity';
 import { BookingStatus } from '@/common/enums/booking-status.enum';
 import { PaymentStatus } from '@/common/enums/payment-status.enum';
 
@@ -31,6 +32,10 @@ describe('BookingsService', () => {
     save: jest.fn(),
   };
 
+  const mockUserRepository = {
+    findOne: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -46,6 +51,10 @@ describe('BookingsService', () => {
         {
           provide: getRepositoryToken(Payment),
           useValue: mockPaymentRepository,
+        },
+        {
+          provide: getRepositoryToken(User),
+          useValue: mockUserRepository,
         },
       ],
     }).compile();
@@ -80,6 +89,10 @@ describe('BookingsService', () => {
       };
 
       mockServiceRepository.findOne.mockResolvedValue(serviceData);
+      mockUserRepository.findOne.mockResolvedValue({
+        id: customerId,
+        cityId: 'city-id',
+      });
       mockBookingRepository.create.mockReturnValue(bookingData);
       mockBookingRepository.save.mockResolvedValue({
         id: 'booking-id',

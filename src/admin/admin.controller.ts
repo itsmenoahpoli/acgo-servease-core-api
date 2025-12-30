@@ -38,7 +38,7 @@ export class AdminController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all users' })
   @Permissions(Permission.USER_READ)
-  async getUsers() {
+  async getUsersHandler() {
     return this.adminService.getUsers();
   }
 
@@ -47,7 +47,7 @@ export class AdminController {
   @ApiOperation({ summary: 'Update user status' })
   @Permissions(Permission.USER_WRITE)
   @ApiBody({ type: UpdateUserStatusDto })
-  async updateUserStatus(
+  async updateUserStatusHandler(
     @Param('id') userId: string,
     @Body() updateUserStatusDto: UpdateUserStatusDto,
   ) {
@@ -62,7 +62,7 @@ export class AdminController {
   @ApiOperation({ summary: 'Create role' })
   @Permissions(Permission.USER_WRITE)
   @ApiBody({ type: CreateRoleDto })
-  async createRole(@Body() createRoleDto: CreateRoleDto) {
+  async createRoleHandler(@Body() createRoleDto: CreateRoleDto) {
     return this.adminService.createRole(
       createRoleDto.name,
       createRoleDto.description,
@@ -75,7 +75,7 @@ export class AdminController {
   @ApiOperation({ summary: 'Update role' })
   @Permissions(Permission.USER_WRITE)
   @ApiBody({ type: UpdateRoleDto })
-  async updateRole(
+  async updateRoleHandler(
     @Param('id') roleId: string,
     @Body() updateRoleDto: UpdateRoleDto,
   ) {
@@ -91,7 +91,7 @@ export class AdminController {
   @ApiOperation({ summary: 'Approve KYC' })
   @Permissions(Permission.KYC_APPROVE)
   @ApiBody({ schema: { type: 'object', properties: { notes: { type: 'string' } } } })
-  async approveKYC(
+  async approveKYCHandler(
     @Param('id') kycId: string,
     @Request() req,
     @Body() body: { notes?: string },
@@ -104,7 +104,7 @@ export class AdminController {
   @ApiOperation({ summary: 'Reject KYC' })
   @Permissions(Permission.KYC_APPROVE)
   @ApiBody({ schema: { type: 'object', properties: { notes: { type: 'string' } } } })
-  async rejectKYC(
+  async rejectKYCHandler(
     @Param('id') kycId: string,
     @Request() req,
     @Body() body: { notes?: string },
@@ -116,7 +116,7 @@ export class AdminController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all KYC submissions' })
   @Permissions(Permission.KYC_APPROVE)
-  async getKYCList() {
+  async getKYCListHandler() {
     return this.adminService.getKYCList();
   }
 
@@ -125,7 +125,7 @@ export class AdminController {
   @ApiOperation({ summary: 'Blacklist IP address' })
   @Permissions(Permission.SYSTEM_SECURITY)
   @ApiBody({ type: BlacklistIPDto })
-  async blacklistIP(@Body() blacklistIPDto: BlacklistIPDto) {
+  async blacklistIPHandler(@Body() blacklistIPDto: BlacklistIPDto) {
     return this.adminService.blacklistIP(
       blacklistIPDto.ipAddress,
       blacklistIPDto.reason,
@@ -137,7 +137,7 @@ export class AdminController {
   @ApiOperation({ summary: 'Block email address' })
   @Permissions(Permission.SYSTEM_SECURITY)
   @ApiBody({ type: BlockEmailDto })
-  async blockEmail(@Body() blockEmailDto: BlockEmailDto) {
+  async blockEmailHandler(@Body() blockEmailDto: BlockEmailDto) {
     return this.adminService.blockEmail(
       blockEmailDto.email,
       blockEmailDto.reason,

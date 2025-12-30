@@ -7,6 +7,7 @@ import { UnauthorizedException, ConflictException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from '@/entities/user.entity';
 import { Otp } from '@/entities/otp.entity';
+import { RefreshToken } from '@/entities/refresh-token.entity';
 import { NotificationsService } from '@/notifications/notifications.service';
 import { AccountType } from '@/common/enums/account-type.enum';
 import { AccountStatus } from '@/common/enums/account-status.enum';
@@ -28,6 +29,14 @@ describe('AuthService', () => {
     findOne: jest.fn(),
     create: jest.fn(),
     save: jest.fn(),
+  };
+
+  const mockRefreshTokenRepository = {
+    find: jest.fn(),
+    findOne: jest.fn(),
+    create: jest.fn(),
+    save: jest.fn(),
+    update: jest.fn(),
   };
 
   const mockJwtService = {
@@ -56,6 +65,10 @@ describe('AuthService', () => {
         {
           provide: getRepositoryToken(Otp),
           useValue: mockOtpRepository,
+        },
+        {
+          provide: getRepositoryToken(RefreshToken),
+          useValue: mockRefreshTokenRepository,
         },
         {
           provide: JwtService,
@@ -226,12 +239,29 @@ describe('AuthService', () => {
       mockUserRepository.findOne.mockResolvedValue(user);
       mockOtpRepository.findOne.mockResolvedValue(otpRecord);
       mockOtpRepository.save.mockResolvedValue({ ...otpRecord, used: true });
-      mockJwtService.sign.mockReturnValue('jwt-token');
+      mockJwtService.sign
+        .mockReturnValueOnce('jwt-token')
+        .mockReturnValueOnce('refresh-token');
+      mockRefreshTokenRepository.find.mockResolvedValue([]);
+      mockRefreshTokenRepository.create.mockReturnValue({
+        userId: 'user-id',
+        tokenHash: 'hashed-token',
+        expiresAt: new Date(),
+      });
+      mockRefreshTokenRepository.save.mockResolvedValue({
+        id: 'refresh-token-id',
+      });
+      mockConfigService.get.mockImplementation((key: string) => {
+        if (key === 'JWT_EXPIRES_IN') return '15m';
+        if (key === 'JWT_REFRESH_EXPIRES_IN') return '7d';
+        return undefined;
+      });
 
       const result = await service.verifySigninOTP(email, otp);
 
       expect(mockJwtService.sign).toHaveBeenCalled();
-      expect(result).toHaveProperty('accessToken', 'jwt-token');
+      expect(result).toHaveProperty('accessToken');
+      expect(result).toHaveProperty('refreshToken');
     });
   });
 });

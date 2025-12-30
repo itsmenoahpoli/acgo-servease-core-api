@@ -40,7 +40,7 @@ export class ServicesController {
   @ApiOperation({ summary: 'Create service category (Admin only)' })
   @Permissions(Permission.USER_WRITE)
   @ApiBody({ type: CreateCategoryDto })
-  async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
+  async createCategoryHandler(@Body() createCategoryDto: CreateCategoryDto) {
     return this.servicesService.createCategory(
       createCategoryDto.name,
       createCategoryDto.description,
@@ -50,7 +50,7 @@ export class ServicesController {
   @Get('categories')
   @Public()
   @ApiOperation({ summary: 'Get all service categories' })
-  async getCategories() {
+  async getCategoriesHandler() {
     return this.servicesService.getCategories();
   }
 
@@ -63,7 +63,7 @@ export class ServicesController {
     AccountType.SERVICE_PROVIDER_BUSINESS,
   )
   @ApiBody({ type: CreateServiceDto })
-  async createService(@Request() req, @Body() createServiceDto: CreateServiceDto) {
+  async createServiceHandler(@Request() req, @Body() createServiceDto: CreateServiceDto) {
     return this.servicesService.createService(
       req.user.id,
       createServiceDto.title,
@@ -80,7 +80,7 @@ export class ServicesController {
   @ApiQuery({ name: 'minPrice', required: false, type: Number })
   @ApiQuery({ name: 'maxPrice', required: false, type: Number })
   @ApiQuery({ name: 'cityId', required: false })
-  async browseServices(
+  async browseServicesHandler(
     @Query('category') category?: string,
     @Query('minPrice') minPrice?: number,
     @Query('maxPrice') maxPrice?: number,
@@ -92,7 +92,7 @@ export class ServicesController {
   @Get(':id')
   @Public()
   @ApiOperation({ summary: 'Get service by ID' })
-  async getServiceById(@Param('id') id: string) {
+  async getServiceByIdHandler(@Param('id') id: string) {
     return this.servicesService.getServiceById(id);
   }
 }

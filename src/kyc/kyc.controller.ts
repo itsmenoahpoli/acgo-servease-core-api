@@ -38,7 +38,7 @@ export class KycController {
   )
   @UseGuards(AccountTypeGuard)
   @ApiBody({ type: SubmitKycDto })
-  async submitKYC(@Request() req, @Body() submitKycDto: SubmitKycDto) {
+  async submitKYCHandler(@Request() req, @Body() submitKycDto: SubmitKycDto) {
     return this.kycService.submitKYC(
       req.user.id,
       submitKycDto.documentType,
@@ -50,7 +50,7 @@ export class KycController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get KYC Status' })
   @ApiResponse({ status: 200, description: 'KYC status' })
-  async getKYCStatus(@Request() req) {
+  async getKYCStatusHandler(@Request() req) {
     return this.kycService.getKYCStatus(req.user.id);
   }
 }
