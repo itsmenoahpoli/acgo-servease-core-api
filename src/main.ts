@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
+import basicAuth from 'express-basic-auth';
 import { AppModule } from '@/app.module';
 
 async function bootstrap() {
@@ -17,6 +18,19 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
       transform: true,
     }),
+  );
+
+  const swaggerUsername = process.env.SWAGGER_USERNAME || 'admin';
+  const swaggerPassword = process.env.SWAGGER_PASSWORD || 'admin';
+
+  app.use(
+    ['/api', '/api-json', '/api-yaml'],
+    basicAuth({
+      challenge: true,
+      users: {
+        [swaggerUsername]: swaggerPassword,
+      },
+    }) as any,
   );
 
   const config = new DocumentBuilder()
